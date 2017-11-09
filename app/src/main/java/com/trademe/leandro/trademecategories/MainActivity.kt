@@ -1,11 +1,11 @@
 package com.trademe.leandro.trademecategories
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
