@@ -1,7 +1,9 @@
 package com.trademe.leandro.trademecategories
 
 import com.trademe.leandro.trademecategories.categories.CategoriesFragment
+import com.trademe.leandro.trademecategories.categories.CategoriesModule
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
+import com.trademe.leandro.trademecategories.listings.ListingsModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,9 +12,9 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class MainModule {
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = arrayOf(CategoriesModule::class))
     abstract fun categoriesFragment(): CategoriesFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = arrayOf(ListingsModule::class))
     abstract fun listingsFragment(): ListingsFragment
 }
