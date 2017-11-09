@@ -1,11 +1,10 @@
 package com.trademe.leandro.trademecategories
 
-import javax.inject.Singleton
-
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
 /**
  * Created by Leandro on 10/11/2017.
