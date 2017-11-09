@@ -21,6 +21,7 @@ class CategoriesFragment : DaggerFragment() {
         viewModel.category.observe(this, Observer {
             it?.subcategories?.let { listSubcategories(it) }
         })
+        if (savedInstanceState == null) viewModel.onInit()
     }
 
     override fun onCreateView(
