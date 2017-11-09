@@ -1,9 +1,11 @@
 package com.trademe.leandro.trademecategories.data
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by Leandro on 10/11/2017.
  */
 data class Category(
-        val name: String,
-        val subcategories: List<Category> = ArrayList()
+        @SerializedName("Name") val name: String,
+        @SerializedName("Subcategories") val subcategories: List<Category> = ArrayList()
 )
