@@ -23,14 +23,14 @@ class CategoriesFragment : DaggerFragment() {
         })
     }
 
-    private fun listSubcategories(subcategories: List<Category>) {
-        Log.d(CategoriesFragment::class.java.simpleName, subcategories.toString())
-        // TODO Update list
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater?,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? = inflater?.inflate(R.layout.fragment_categories, container, false)
+
+    private fun listSubcategories(subcategories: List<Category>) {
+        Log.d(CategoriesFragment::class.java.simpleName, subcategories.toString())
+        // TODO Update list
+    }
 }
