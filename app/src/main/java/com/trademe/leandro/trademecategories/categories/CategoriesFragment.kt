@@ -40,6 +40,8 @@ class CategoriesFragment : DaggerFragment() {
     }
 
     private fun listSubcategories(subcategories: List<Category>) {
-        categoryList.adapter = CategoriesAdapter(subcategories)
+        categoryList.adapter = CategoriesAdapter(subcategories, {
+            viewModel.onCategorySelected(it)
+        })
     }
 }
