@@ -22,5 +22,5 @@ object CategoriesModule {
     fun viewModel(
             fragment: CategoriesFragment,
             factory: CategoriesViewModel.Factory
-    ) = ViewModelProviders.of(fragment, factory).get(CategoriesViewModel::class.java)
+    ) = ViewModelProviders.of(fragment.activity, factory).get(CategoriesViewModel::class.java)
 }
