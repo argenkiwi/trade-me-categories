@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.trademe.leandro.trademecategories.R
 import com.trademe.leandro.trademecategories.data.Category
 
-
 /**
  * Created by Leandro on 10/11/2017.
  */

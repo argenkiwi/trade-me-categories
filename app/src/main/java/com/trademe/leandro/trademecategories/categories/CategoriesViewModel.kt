@@ -20,15 +20,15 @@ class CategoriesViewModel(
 
     val category: MutableLiveData<Category> = MutableLiveData<Category>()
 
-    fun onInit() {
+    fun onCategorySelected(category: Category) {
+        this.category.value = category
+    }
+
+    init {
         disposables.add(service.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer { category.value = it }));
-    }
-
-    fun onCategorySelected(category: Category) {
-        this.category.value = category
     }
 
     override fun onCleared() {
