@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
  * Created by Leandro on 10/11/2017.
  */
 class CategoriesViewModel(
-        private val service: TradeMeService
+        service: TradeMeService
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
 
@@ -42,6 +42,5 @@ class CategoriesViewModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return CategoriesViewModel(service) as T
         }
-
     }
 }
