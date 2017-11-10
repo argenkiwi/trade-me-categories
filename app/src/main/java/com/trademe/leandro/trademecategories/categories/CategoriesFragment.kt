@@ -2,7 +2,8 @@ package com.trademe.leandro.trademecategories.categories
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ class CategoriesFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModel: CategoriesViewModel;
+
+    private lateinit var categoryList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +33,13 @@ class CategoriesFragment : DaggerFragment() {
             savedInstanceState: Bundle?
     ): View? = inflater?.inflate(R.layout.fragment_categories, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        categoryList = view.findViewById<RecyclerView>(R.id.category_list);
+        categoryList.layoutManager = LinearLayoutManager(context)
+    }
+
     private fun listSubcategories(subcategories: List<Category>) {
-        Log.d(CategoriesFragment::class.java.simpleName, subcategories.toString())
-        // TODO Update list
+        categoryList.adapter = CategoriesAdapter(subcategories)
     }
 }
