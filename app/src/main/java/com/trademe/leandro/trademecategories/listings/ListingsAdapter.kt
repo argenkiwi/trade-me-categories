@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.trademe.leandro.trademecategories.R
 import com.trademe.leandro.trademecategories.data.Listing
 
@@ -15,14 +16,16 @@ import com.trademe.leandro.trademecategories.data.Listing
 class ListingsAdapter(
         private val listings: List<Listing>
 ) : RecyclerView.Adapter<ListingsAdapter.ViewHolder>() {
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        // TODO Load thumbnail.
-        holder?.titleView?.text = listings[position].title
-        holder?.idView?.text = "${listings[position].id}"
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Glide.with(holder.thumbnailView.context)
+                .load(listings[position].pictureHref)
+                .into(holder.thumbnailView);
+        holder.titleView.text = listings[position].title
+        holder.idView.text = "${listings[position].id}"
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val listingView = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val listingView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_listing, parent, false) as View
         return ViewHolder(listingView)
     }

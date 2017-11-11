@@ -29,6 +29,7 @@ android {
 ext {
     daggerVersion = '2.13'
     retrofitVersion = '2.3.0'
+    glideVersion = '4.3.1'
 }
 
 dependencies {
@@ -61,8 +62,13 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
+    // Signpost
     implementation 'oauth.signpost:signpost-core:1.2.1.2'
     implementation 'se.akerfeldt:okhttp-signpost:1.1.0'
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
