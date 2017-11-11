@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.trademe.leandro.trademecategories.R
-import com.trademe.leandro.trademecategories.data.Category
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -22,7 +21,11 @@ class CategoriesFragment : DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.category.observe(this, Observer {
-            it?.subcategories?.let { listSubcategories(it) }
+            it?.subcategories?.let {
+                categoryList.adapter = CategoriesAdapter(it, {
+                    viewModel.onCategorySelected(it)
+                })
+            }
         })
     }
 
@@ -36,11 +39,5 @@ class CategoriesFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         categoryList = view.findViewById<RecyclerView>(R.id.category_list);
         categoryList.layoutManager = LinearLayoutManager(context)
-    }
-
-    private fun listSubcategories(subcategories: List<Category>) {
-        categoryList.adapter = CategoriesAdapter(subcategories, {
-            viewModel.onCategorySelected(it)
-        })
     }
 }
