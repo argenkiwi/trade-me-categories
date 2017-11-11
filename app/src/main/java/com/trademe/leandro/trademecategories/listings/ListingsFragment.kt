@@ -1,5 +1,6 @@
 package com.trademe.leandro.trademecategories.listings
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,13 @@ class ListingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModel: ListingsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.searchResult.observe(this, Observer {
+            // TODO Update listings.
+        })
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater?,
