@@ -1,5 +1,6 @@
 package com.trademe.leandro.trademecategories
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
@@ -9,9 +10,6 @@ import io.reactivex.functions.Consumer
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-
-    @Inject
-    lateinit var mainViewModel: MainViewModel
 
     private val disposables = CompositeDisposable()
     private var searchButton: View? = null
@@ -23,7 +21,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
         searchButton = findViewById<View>(R.id.fab)
 
-        disposables.add(mainViewModel.category.subscribe(Consumer {
+        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        disposables.add(viewModel.category.subscribe(Consumer {
             val categoryNumber = it.number
             searchButton?.setOnClickListener {
                 startActivity(ListingsActivity.newIntent(this, categoryNumber))

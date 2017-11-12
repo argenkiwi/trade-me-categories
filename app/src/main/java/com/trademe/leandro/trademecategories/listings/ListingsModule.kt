@@ -17,11 +17,4 @@ object ListingsModule {
             categoryNumberObservable: Observable<String>,
             service: TradeMeService
     ) = ListingsViewModel.Factory(categoryNumberObservable, service)
-
-    @JvmStatic
-    @Provides
-    fun viewModel(
-            fragment: ListingsFragment,
-            factory: ListingsViewModel.Factory
-    ) = ViewModelProviders.of(fragment.activity, factory).get(ListingsViewModel::class.java)
 }

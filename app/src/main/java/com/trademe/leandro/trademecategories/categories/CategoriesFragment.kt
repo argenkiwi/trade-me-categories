@@ -1,6 +1,7 @@
 package com.trademe.leandro.trademecategories.categories
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,12 +15,16 @@ import javax.inject.Inject
 class CategoriesFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModel: CategoriesViewModel;
+    lateinit var factory:CategoriesViewModel.Factory
 
     private lateinit var categoryList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel = ViewModelProviders
+                .of(this, factory)
+                .get(CategoriesViewModel::class.java)
+
         viewModel.category.observe(this, Observer {
             it?.subcategories?.let {
                 categoryList.adapter = CategoriesAdapter(it, {
