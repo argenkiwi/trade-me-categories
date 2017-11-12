@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Observable
 
 /**
  * Created by Leandro on 10/11/2017.
@@ -12,10 +13,15 @@ import dagger.Provides
 object ListingsModule {
     @JvmStatic
     @Provides
-    fun viewModelFactory(service: TradeMeService) = ListingsViewModel.Factory(service)
+    fun viewModelFactory(
+            categoryNumberObservable: Observable<String>,
+            service: TradeMeService
+    ) = ListingsViewModel.Factory(categoryNumberObservable, service)
 
     @JvmStatic
     @Provides
-    fun viewModel(fragment: ListingsFragment, factory: ListingsViewModel.Factory) =
-            ViewModelProviders.of(fragment.activity, factory).get(ListingsViewModel::class.java)
+    fun viewModel(
+            fragment: ListingsFragment,
+            factory: ListingsViewModel.Factory
+    ) = ViewModelProviders.of(fragment.activity, factory).get(ListingsViewModel::class.java)
 }
