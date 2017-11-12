@@ -1,5 +1,7 @@
 package com.trademe.leandro.trademecategories
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
 import com.trademe.leandro.trademecategories.listings.ListingsModule
@@ -15,6 +17,16 @@ class ListingsActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_listings)
     }
 
+    companion object {
+        private val EXTRA_CATEGORY_NUMBER = "extra_category_number"
+
+        fun newIntent(
+                context: Context,
+                categoryNumber: String
+        ): Intent = Intent(context, ListingsActivity::class.java)
+                .putExtra(EXTRA_CATEGORY_NUMBER, categoryNumber)
+    }
+
     @dagger.Module
     abstract class Module {
         @ContributesAndroidInjector(modules = arrayOf(ListingsModule::class))
@@ -24,7 +36,13 @@ class ListingsActivity : DaggerAppCompatActivity() {
         companion object {
             @JvmStatic
             @Provides
-            fun categoryNumberObservable(): Observable<String> = Observable.just("")
+            fun categoryNumberObservable(
+                    activity: ListingsActivity
+            ): Observable<String> {
+                val categoryNumber = activity.intent.extras
+                        .getString(ListingsActivity.EXTRA_CATEGORY_NUMBER, "")
+                return Observable.just(categoryNumber)
+            }
         }
     }
 }
