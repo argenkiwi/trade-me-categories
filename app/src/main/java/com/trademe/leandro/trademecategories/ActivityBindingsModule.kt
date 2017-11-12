@@ -11,4 +11,7 @@ abstract class ActivityBindingsModule {
 
     @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
     abstract fun mainActivity(): MainActivity
+
+    @ContributesAndroidInjector(modules = arrayOf(ListingsActivity.Module::class))
+    abstract fun listingsActivity(): ListingsActivity
 }
