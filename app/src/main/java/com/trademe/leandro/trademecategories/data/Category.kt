@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
 data class Category(
         @SerializedName("Number") val number: String,
         @SerializedName("Name") val name: String,
-        @SerializedName("Subcategories") val subcategories: List<Category> = ArrayList()
+        @SerializedName("Subcategories") val subcategories: List<Category>,
+        @SerializedName("IsLeaf") val isLeaf: Boolean
 )

@@ -30,7 +30,9 @@ class CategoriesViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer { onCategorySelected(it) }));
 
-        disposables.add(categoryObservable.subscribe(Consumer { category.value = it }))
+        disposables.add(categoryObservable
+                .filter({ !it.isLeaf })
+                .subscribe(Consumer { category.value = it }))
     }
 
     fun onCategorySelected(category: Category) {
