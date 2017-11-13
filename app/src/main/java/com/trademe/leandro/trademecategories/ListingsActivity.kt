@@ -15,15 +15,19 @@ class ListingsActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listings)
+        intent.extras.getString(EXTRA_CATEGORY_NAME)?.let { title = it }
     }
 
     companion object {
+        private val EXTRA_CATEGORY_NAME = "extra_category_name"
         private val EXTRA_CATEGORY_NUMBER = "extra_category_number"
 
         fun newIntent(
                 context: Context,
+                categoryName: String,
                 categoryNumber: String
         ): Intent = Intent(context, ListingsActivity::class.java)
+                .putExtra(EXTRA_CATEGORY_NAME, categoryName)
                 .putExtra(EXTRA_CATEGORY_NUMBER, categoryNumber)
     }
 

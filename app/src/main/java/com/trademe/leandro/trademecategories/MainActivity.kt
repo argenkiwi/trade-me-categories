@@ -23,9 +23,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
         val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         disposables.add(viewModel.category.subscribe(Consumer {
+            val categoryName = it.name
             val categoryNumber = it.number
             searchButton?.setOnClickListener {
-                startActivity(ListingsActivity.newIntent(this, categoryNumber))
+                startActivity(ListingsActivity.newIntent(this, categoryName, categoryNumber))
             }
         }))
 
