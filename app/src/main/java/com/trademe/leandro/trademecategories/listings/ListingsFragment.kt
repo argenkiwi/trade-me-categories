@@ -32,16 +32,15 @@ class ListingsFragment : DaggerFragment() {
                 messageView.setText(R.string.loading)
                 messageView.visibility = View.VISIBLE
                 listingsList.visibility = View.GONE
+            } else if (it?.error != null) {
+                messageView.visibility = View.VISIBLE
+                messageView.text = it.error.localizedMessage
+                listingsList.visibility = View.GONE
             } else {
                 it?.searchResult?.list?.let {
                     messageView.visibility = View.GONE
                     listingsList.visibility = View.VISIBLE
                     listingsList.adapter = ListingsAdapter(it)
-                }
-                it?.error?.let {
-                    messageView.visibility = View.VISIBLE
-                    messageView.text = it.localizedMessage
-                    listingsList.visibility = View.GONE
                 }
             }
         })

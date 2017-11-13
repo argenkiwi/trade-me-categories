@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.trademe.leandro.trademecategories.TradeMeService
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -22,17 +23,14 @@ class ListingsViewModel(
     val viewState: MutableLiveData<ListingViewState> = MutableLiveData<ListingViewState>()
 
     init {
-        disposables.add(categoryNumberObservable.doAfterNext({
-            viewState.value = ListingViewState(true)
-        }).flatMapSingle {
+        disposables.add(categoryNumberObservable.flatMap {
             service.search(it)
+                    .map { ListingViewState(false, it) }
+                    .onErrorReturn { ListingViewState(false, error = it) }
+                    .startWith(ListingViewState(true))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-        }.subscribe({
-            viewState.value = ListingViewState(false, it)
-        }, {
-            viewState.value = ListingViewState(false, error = it)
-        }))
+        }.subscribe({ viewState.value = it }))
     }
 
     override fun onCleared() {
