@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.trademe.leandro.trademecategories.R
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -15,8 +16,9 @@ import javax.inject.Inject
 class CategoriesFragment : DaggerFragment() {
 
     @Inject
-    lateinit var factory:CategoriesViewModel.Factory
+    lateinit var factory: CategoriesViewModel.Factory
 
+    private lateinit var messageView: TextView
     private lateinit var categoryList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +27,23 @@ class CategoriesFragment : DaggerFragment() {
                 .of(this, factory)
                 .get(CategoriesViewModel::class.java)
 
-        viewModel.category.observe(this, Observer {
-            it?.subcategories?.let {
-                categoryList.adapter = CategoriesAdapter(it, {
-                    viewModel.onCategorySelected(it)
-                })
+        viewModel.viewState.observe(this, Observer {
+            if (it != null && it.isLoading) {
+                messageView.visibility = View.VISIBLE
+                messageView.setText(R.string.loading)
+                categoryList.visibility = View.GONE
+            } else if (it?.error != null) {
+                messageView.visibility = View.VISIBLE
+                messageView.text = it.error.localizedMessage
+                categoryList.visibility = View.GONE
+            } else {
+                messageView.visibility = View.GONE
+                categoryList.visibility = View.VISIBLE
+                it?.category?.subcategories?.let {
+                    categoryList.adapter = CategoriesAdapter(it, {
+                        viewModel.onCategorySelected(it)
+                    })
+                }
             }
         })
     }
@@ -42,7 +56,8 @@ class CategoriesFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoryList = view.findViewById<RecyclerView>(R.id.category_list);
+        messageView = view.findViewById<TextView>(R.id.message)
+        categoryList = view.findViewById<RecyclerView>(R.id.category_list)
         categoryList.layoutManager = LinearLayoutManager(context)
     }
 }

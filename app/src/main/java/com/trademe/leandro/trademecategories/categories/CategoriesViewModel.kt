@@ -22,17 +22,22 @@ class CategoriesViewModel(
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
 
-    val category: MutableLiveData<Category> = MutableLiveData<Category>()
+    val viewState = MutableLiveData<CategoriesViewState>()
 
     init {
+        viewState.value = CategoriesViewState(true)
         disposables.add(service.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Consumer { onCategorySelected(it) }));
+                .subscribe({
+                    onCategorySelected(it)
+                }, {
+                    viewState.value = CategoriesViewState(false, error = it)
+                }));
 
         disposables.add(categoryObservable
                 .filter({ !it.isLeaf })
-                .subscribe(Consumer { category.value = it }))
+                .subscribe(Consumer { viewState.value = CategoriesViewState(false, it) }))
     }
 
     fun onCategorySelected(category: Category) {
@@ -49,8 +54,7 @@ class CategoriesViewModel(
             private val categoryObservable: Observable<Category>,
             private val service: TradeMeService
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return CategoriesViewModel(categoryObserver, categoryObservable, service) as T
-        }
+        override fun <T : ViewModel?> create(modelClass: Class<T>) =
+                CategoriesViewModel(categoryObserver, categoryObservable, service) as T
     }
 }
