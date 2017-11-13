@@ -24,9 +24,7 @@ class CategoriesAdapter(
         return ViewHolder(nameView, { onCategorySelected(categories[it]) })
     }
 
-    override fun getItemCount(): Int {
-        return categories.size;
-    }
+    override fun getItemCount() = categories.size
 
     class ViewHolder(
             val nameView: TextView,
