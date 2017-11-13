@@ -8,10 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.trademe.leandro.trademecategories.R
-import com.trademe.leandro.trademecategories.categories.CategoriesViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_main.view.*
 import javax.inject.Inject
 
 class ListingsFragment : DaggerFragment() {
@@ -19,6 +18,7 @@ class ListingsFragment : DaggerFragment() {
     @Inject
     lateinit var factory: ListingsViewModel.Factory
 
+    private lateinit var messageView: TextView
     private lateinit var listingsList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +27,23 @@ class ListingsFragment : DaggerFragment() {
                 .of(this, factory)
                 .get(ListingsViewModel::class.java)
 
-        viewModel.searchResult.observe(this, Observer {
-            it?.list?.let { listingsList.adapter = ListingsAdapter(it) }
+        viewModel.viewState.observe(this, Observer {
+            if (it != null && it.isLoading) {
+                messageView.setText(R.string.loading)
+                messageView.visibility = View.VISIBLE
+                listingsList.visibility = View.GONE
+            } else {
+                it?.searchResult?.list?.let {
+                    messageView.visibility = View.GONE
+                    listingsList.visibility = View.VISIBLE
+                    listingsList.adapter = ListingsAdapter(it)
+                }
+                it?.error?.let {
+                    messageView.visibility = View.VISIBLE
+                    messageView.text = it.localizedMessage
+                    listingsList.visibility = View.GONE
+                }
+            }
         })
     }
 
@@ -40,6 +55,7 @@ class ListingsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        messageView = view.findViewById<TextView>(R.id.message)
         listingsList = view.findViewById<RecyclerView>(R.id.listings_list)
         listingsList.layoutManager = LinearLayoutManager(context)
     }
