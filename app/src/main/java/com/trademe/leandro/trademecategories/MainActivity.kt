@@ -8,15 +8,10 @@ import android.view.View
 import com.trademe.leandro.trademecategories.categories.CategoriesAdapter
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
 import dagger.android.support.DaggerAppCompatActivity
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-
-    private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

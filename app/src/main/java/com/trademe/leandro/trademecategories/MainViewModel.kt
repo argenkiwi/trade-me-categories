@@ -1,6 +1,5 @@
 package com.trademe.leandro.trademecategories
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.trademe.leandro.trademecategories.data.Category

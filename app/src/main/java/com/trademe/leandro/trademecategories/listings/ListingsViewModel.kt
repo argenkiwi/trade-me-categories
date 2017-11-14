@@ -5,10 +5,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.trademe.leandro.trademecategories.TradeMeService
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -42,8 +40,7 @@ class ListingsViewModel(
             private val categoryNumberObservable: Observable<String>,
             private val service: TradeMeService
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ListingsViewModel(categoryNumberObservable, service) as T
-        }
+        override fun <T : ViewModel?> create(modelClass: Class<T>) =
+                ListingsViewModel(categoryNumberObservable, service) as T
     }
 }
