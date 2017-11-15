@@ -1,6 +1,5 @@
 package com.trademe.leandro.trademecategories.listings
 
-import android.arch.lifecycle.ViewModelProviders
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
 import dagger.Provides
