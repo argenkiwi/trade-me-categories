@@ -10,8 +10,12 @@ import com.trademe.leandro.trademecategories.listings.ListingsFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var factory: MainViewModel.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +24,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
         breadcrumb.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         viewModel.breadcrumb.observe(this, Observer {
             it?.let {
                 breadcrumb.adapter = CategoriesAdapter(it, {

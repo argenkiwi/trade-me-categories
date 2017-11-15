@@ -2,22 +2,25 @@ package com.trademe.leandro.trademecategories
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import com.trademe.leandro.trademecategories.data.Category
+import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
 
 /**
  * Created by Leandro on 13/11/2017.
  */
-class MainViewModel : ViewModel() {
-    val category: Subject<Category> = BehaviorSubject.create()
+class MainViewModel(
+        val categoryObserver: Observer<Category>,
+        val categoryObservable: Observable<Category>
+) : ViewModel() {
     val breadcrumb = MutableLiveData<List<Category>>()
 
     private val disposables = CompositeDisposable()
 
     init {
-        disposables.add(category.subscribe({
+        disposables.add(categoryObservable.subscribe({
             val categories = breadcrumb.value;
             breadcrumb.value = when {
                 categories == null -> arrayListOf(it)
@@ -28,11 +31,19 @@ class MainViewModel : ViewModel() {
     }
 
     fun onBreadcrumbItemClicked(it: Category) {
-        category.onNext(it)
+        categoryObserver.onNext(it)
     }
 
     override fun onCleared() {
         super.onCleared()
         disposables.dispose()
+    }
+
+    class Factory(
+            private val observer: Observer<Category>,
+            private val observable: Observable<Category>
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>) =
+                MainViewModel(observer, observable) as T
     }
 }
