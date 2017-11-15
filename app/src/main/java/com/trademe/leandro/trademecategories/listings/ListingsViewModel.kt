@@ -23,7 +23,12 @@ class ListingsViewModel(
     init {
         disposables.add(categoryNumberObservable.flatMap {
             service.search(it)
-                    .map { Success(it) as ListingViewState }
+                    .map {
+                        when {
+                            it.totalCount > 0 -> Success(it)
+                            else -> Empty
+                        }
+                    }
                     .onErrorReturn { Failure(it) }
                     .startWith(Loading)
                     .subscribeOn(Schedulers.io())

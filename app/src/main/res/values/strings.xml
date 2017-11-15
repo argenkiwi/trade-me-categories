@@ -5,4 +5,5 @@
     <string name="listings">Listings</string>
     <string name="categories">Categories</string>
     <string name="loading">Loading...</string>
+    <string name="no_listings_found">No listings found.</string>
 </resources>

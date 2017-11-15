@@ -39,6 +39,11 @@ class ListingsFragment : DaggerFragment() {
                     messageView.text = it.error.localizedMessage
                     listingsList.visibility = View.GONE
                 }
+                is Empty -> {
+                    messageView.setText(R.string.no_listings_found)
+                    messageView.visibility = View.VISIBLE
+                    listingsList.visibility = View.GONE
+                }
                 is Success -> {
                     it.searchResult.list.let {
                         messageView.visibility = View.GONE
