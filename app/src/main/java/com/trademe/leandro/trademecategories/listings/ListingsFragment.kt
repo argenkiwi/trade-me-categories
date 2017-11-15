@@ -29,26 +29,21 @@ class ListingsFragment : DaggerFragment() {
 
         viewModel.viewState.observe(this, Observer {
             when (it) {
-                is Loading -> {
-                    messageView.setText(R.string.loading)
-                    messageView.visibility = View.VISIBLE
-                    listingsList.visibility = View.GONE
-                }
-                is Failure -> {
-                    messageView.visibility = View.VISIBLE
-                    messageView.text = it.error.localizedMessage
-                    listingsList.visibility = View.GONE
-                }
-                is Empty -> {
-                    messageView.setText(R.string.no_listings_found)
-                    messageView.visibility = View.VISIBLE
-                    listingsList.visibility = View.GONE
-                }
                 is Success -> {
+                    messageView.visibility = View.GONE
+                    listingsList.visibility = View.VISIBLE
                     it.searchResult.list.let {
-                        messageView.visibility = View.GONE
-                        listingsList.visibility = View.VISIBLE
                         listingsList.adapter = ListingsAdapter(it)
+                    }
+                }
+                else -> {
+                    messageView.visibility = View.VISIBLE
+                    listingsList.visibility = View.GONE
+                    messageView.text = when (it) {
+                        is Loading -> getString(R.string.loading)
+                        is Failure -> it.error.localizedMessage
+                        is Empty -> getString(R.string.no_listings_found)
+                        else -> null
                     }
                 }
             }
