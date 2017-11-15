@@ -23,9 +23,9 @@ class ListingsViewModel(
     init {
         disposables.add(categoryNumberObservable.flatMap {
             service.search(it)
-                    .map { ListingViewState(false, it) }
-                    .onErrorReturn { ListingViewState(false, error = it) }
-                    .startWith(ListingViewState(true))
+                    .map { Success(it) as ListingViewState }
+                    .onErrorReturn { Failure(it) }
+                    .startWith(Loading)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
         }.subscribe({ viewState.value = it }))
