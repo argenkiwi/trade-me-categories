@@ -3,37 +3,25 @@ package com.trademe.leandro.trademecategories.listings
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.trademe.leandro.trademecategories.TradeMeService
+import com.trademe.leandro.trademecategories.SearchUseCase
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Leandro on 10/11/2017.
  */
 class ListingsViewModel(
         categoryNumberObservable: Observable<String>,
-        service: TradeMeService
+        searchUseCase: SearchUseCase
 ) : ViewModel() {
-    private val disposables = CompositeDisposable()
-
     val viewState: MutableLiveData<ListingViewState> = MutableLiveData<ListingViewState>()
 
+    private val disposables = CompositeDisposable()
+
     init {
-        disposables.add(categoryNumberObservable.flatMap {
-            service.search(it)
-                    .map {
-                        when {
-                            it.totalCount > 0 -> Success(it)
-                            else -> Empty
-                        }
-                    }
-                    .onErrorReturn { Failure(it) }
-                    .startWith(Loading)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-        }.subscribe({ viewState.value = it }))
+        disposables.add(categoryNumberObservable
+                .flatMap { searchUseCase.search(it) }
+                .subscribe({ viewState.value = it }))
     }
 
     override fun onCleared() {
@@ -43,9 +31,9 @@ class ListingsViewModel(
 
     class Factory(
             private val categoryNumberObservable: Observable<String>,
-            private val service: TradeMeService
+            private val searchUseCase: SearchUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                ListingsViewModel(categoryNumberObservable, service) as T
+                ListingsViewModel(categoryNumberObservable, searchUseCase) as T
     }
 }

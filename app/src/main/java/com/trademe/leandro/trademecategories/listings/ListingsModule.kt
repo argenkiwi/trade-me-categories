@@ -1,5 +1,6 @@
 package com.trademe.leandro.trademecategories.listings
 
+import com.trademe.leandro.trademecategories.SearchUseCase
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
 import dagger.Provides
@@ -10,10 +11,15 @@ import io.reactivex.Observable
  */
 @Module
 object ListingsModule {
+
+    @JvmStatic
+    @Provides
+    fun searchUseCase(service: TradeMeService) = SearchUseCase(service)
+
     @JvmStatic
     @Provides
     fun viewModelFactory(
             categoryNumberObservable: Observable<String>,
-            service: TradeMeService
-    ) = ListingsViewModel.Factory(categoryNumberObservable, service)
+            searchUseCase: SearchUseCase
+    ) = ListingsViewModel.Factory(categoryNumberObservable, searchUseCase)
 }
