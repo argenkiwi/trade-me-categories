@@ -25,19 +25,19 @@ class CategoriesViewModel(
     val viewState = MutableLiveData<CategoriesViewState>()
 
     init {
-        viewState.value = CategoriesViewState(true)
+        viewState.value = Loading
         disposables.add(service.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     onCategorySelected(it)
                 }, {
-                    viewState.value = CategoriesViewState(false, error = it)
+                    viewState.value = Failure(it)
                 }));
 
         disposables.add(categoryObservable
                 .filter({ !it.isLeaf })
-                .subscribe(Consumer { viewState.value = CategoriesViewState(false, it) }))
+                .subscribe({ viewState.value = Success(it) }))
     }
 
     fun onCategorySelected(category: Category) {

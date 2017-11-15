@@ -28,21 +28,25 @@ class CategoriesFragment : DaggerFragment() {
                 .get(CategoriesViewModel::class.java)
 
         viewModel.viewState.observe(this, Observer {
-            if (it != null && it.isLoading) {
-                messageView.visibility = View.VISIBLE
-                messageView.setText(R.string.loading)
-                categoryList.visibility = View.GONE
-            } else if (it?.error != null) {
-                messageView.visibility = View.VISIBLE
-                messageView.text = it.error.localizedMessage
-                categoryList.visibility = View.GONE
-            } else {
-                messageView.visibility = View.GONE
-                categoryList.visibility = View.VISIBLE
-                it?.category?.subcategories?.let {
-                    categoryList.adapter = CategoriesAdapter(it, {
-                        viewModel.onCategorySelected(it)
-                    })
+            when(it){
+                is Loading -> {
+                    messageView.visibility = View.VISIBLE
+                    messageView.setText(R.string.loading)
+                    categoryList.visibility = View.GONE
+                }
+                is Failure -> {
+                    messageView.visibility = View.VISIBLE
+                    messageView.text = it.error.localizedMessage
+                    categoryList.visibility = View.GONE
+                }
+                is Success -> {
+                    messageView.visibility = View.GONE
+                    categoryList.visibility = View.VISIBLE
+                    it.category.subcategories.let {
+                        categoryList.adapter = CategoriesAdapter(it, {
+                            viewModel.onCategorySelected(it)
+                        })
+                    }
                 }
             }
         })
