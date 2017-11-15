@@ -8,5 +8,5 @@ import com.trademe.leandro.trademecategories.data.SearchResult
 sealed class ListingViewState
 
 object Loading : ListingViewState()
-data class Success(val searchResult: SearchResult) : ListingViewState()
 data class Failure(val error: Throwable) : ListingViewState()
+data class Success(val searchResult: SearchResult) : ListingViewState()
