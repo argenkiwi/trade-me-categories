@@ -1,6 +1,7 @@
 package com.trademe.leandro.trademecategories
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +21,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
+        try {
+            viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } catch (error: Throwable) {
+            AndroidInjection.inject(this)
+        }
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
