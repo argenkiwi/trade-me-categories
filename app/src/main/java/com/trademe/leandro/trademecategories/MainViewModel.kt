@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 class MainViewModel(
         val fragmentInjector: DispatchingAndroidInjector<Fragment>,
         private val categoryObserver: Observer<Category>,
-        private val categoryObservable: Observable<Category>
+        categoryObservable: Observable<Category>
 ) : ViewModel() {
     val breadcrumb = MutableLiveData<List<Category>>()
 

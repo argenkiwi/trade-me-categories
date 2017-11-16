@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
  * Created by Leandro on 15/11/2017.
  */
 class SearchUseCase(private val service: TradeMeService) {
-    fun search(categoryNumber: String): Observable<ListingViewState> = service
+    fun search(categoryNumber: String): Observable<ListingsViewState> = service
             .search(categoryNumber)
             .map {
                 when {
