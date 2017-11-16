@@ -1,6 +1,7 @@
 package com.trademe.leandro.trademecategories
 
 import com.google.gson.Gson
+
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -21,18 +22,6 @@ object ServicesModule {
 
     @JvmStatic
     @Provides
-    @Singleton
-    fun tradeMeService(
-            retrofit: Retrofit
-    ): TradeMeService = retrofit.create(TradeMeService::class.java)
-
-    @JvmStatic
-    @Provides
-    fun httpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BASIC)
-
-    @JvmStatic
-    @Provides
     fun okHttpOAuthConsumer(): OkHttpOAuthConsumer = OkHttpOAuthConsumer(
             BuildConfig.CONSUMER_KEY,
             BuildConfig.CONSUMER_SECRET
@@ -44,18 +33,22 @@ object ServicesModule {
 
     @JvmStatic
     @Provides
+    fun httpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor()
+            .setLevel(HttpLoggingInterceptor.Level.BASIC)
+
+    @JvmStatic
+    @Provides
     fun okHttpClient(
-            httpLoggingInterceptor: HttpLoggingInterceptor,
-            signingInterceptor: SigningInterceptor
+            signingInterceptor: SigningInterceptor,
+            httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = OkHttpClient()
             .newBuilder()
-            .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(signingInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
 
     @JvmStatic
     @Provides
-    @Singleton
     fun gson(): Gson = GsonBuilder().create()
 
     @JvmStatic
@@ -69,4 +62,11 @@ object ServicesModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
+
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun tradeMeService(
+            retrofit: Retrofit
+    ): TradeMeService = retrofit.create(TradeMeService::class.java)
 }
