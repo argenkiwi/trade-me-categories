@@ -1,5 +1,6 @@
 package com.trademe.leandro.trademecategories.listings
 
+import android.arch.lifecycle.ViewModelProviders
 import com.trademe.leandro.trademecategories.SearchUseCase
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
@@ -22,4 +23,11 @@ object ListingsModule {
             categoryNumberObservable: Observable<String>,
             searchUseCase: SearchUseCase
     ) = ListingsViewModel.Factory(categoryNumberObservable, searchUseCase)
+
+    @JvmStatic
+    @Provides
+    fun viewModel(
+            fragment: ListingsFragment,
+            factory: ListingsViewModel.Factory
+    ) = ViewModelProviders.of(fragment, factory).get(ListingsViewModel::class.java)
 }

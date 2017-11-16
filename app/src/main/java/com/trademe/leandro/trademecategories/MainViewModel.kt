@@ -3,7 +3,9 @@ package com.trademe.leandro.trademecategories
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.support.v4.app.Fragment
 import com.trademe.leandro.trademecategories.data.Category
+import dagger.android.DispatchingAndroidInjector
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
@@ -12,8 +14,9 @@ import io.reactivex.disposables.CompositeDisposable
  * Created by Leandro on 13/11/2017.
  */
 class MainViewModel(
-        val categoryObserver: Observer<Category>,
-        val categoryObservable: Observable<Category>
+        val fragmentInjector: DispatchingAndroidInjector<Fragment>,
+        private val categoryObserver: Observer<Category>,
+        private val categoryObservable: Observable<Category>
 ) : ViewModel() {
     val breadcrumb = MutableLiveData<List<Category>>()
 
@@ -40,10 +43,11 @@ class MainViewModel(
     }
 
     class Factory(
+            private val fragmentInjector: DispatchingAndroidInjector<Fragment>,
             private val observer: Observer<Category>,
             private val observable: Observable<Category>
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                MainViewModel(observer, observable) as T
+                MainViewModel(fragmentInjector, observer, observable) as T
     }
 }

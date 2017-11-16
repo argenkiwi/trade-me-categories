@@ -1,5 +1,6 @@
 package com.trademe.leandro.trademecategories.categories
 
+import android.arch.lifecycle.ViewModelProviders
 import com.trademe.leandro.trademecategories.TradeMeService
 import com.trademe.leandro.trademecategories.data.Category
 import dagger.Module
@@ -21,4 +22,11 @@ object CategoriesModule {
             service: TradeMeService
     ): CategoriesViewModel.Factory = CategoriesViewModel
             .Factory(categoryObserver, categoryObservable, service)
+
+    @JvmStatic
+    @Provides
+    fun viewModel(
+            fragment: CategoriesFragment,
+            factory: CategoriesViewModel.Factory
+    ) = ViewModelProviders.of(fragment, factory).get(CategoriesViewModel::class.java)
 }

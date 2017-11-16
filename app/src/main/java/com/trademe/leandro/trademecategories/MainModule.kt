@@ -1,6 +1,7 @@
 package com.trademe.leandro.trademecategories
 
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v4.app.Fragment
 import com.trademe.leandro.trademecategories.categories.CategoriesFragment
 import com.trademe.leandro.trademecategories.categories.CategoriesModule
 import com.trademe.leandro.trademecategories.data.Category
@@ -10,6 +11,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.subjects.BehaviorSubject
@@ -26,6 +28,12 @@ abstract class MainModule {
     @ContributesAndroidInjector(modules = arrayOf(ListingsModule::class))
     abstract fun listingsFragment(): ListingsFragment
 
+    @Binds
+    abstract fun categoryObserver(subject: Subject<Category>): Observer<Category>
+
+    @Binds
+    abstract fun categoryObservable(subject: Subject<Category>): Observable<Category>
+
     @Module
     companion object {
         @JvmStatic
@@ -36,24 +44,17 @@ abstract class MainModule {
         @JvmStatic
         @Provides
         @ActivityScope
-        fun viewModelFactory(subject: Subject<Category>) = MainViewModel.Factory(subject, subject)
+        fun viewModelFactory(
+                fragmentInjector: DispatchingAndroidInjector<Fragment>,
+                subject: Subject<Category>
+        ) = MainViewModel.Factory(fragmentInjector, subject, subject)
 
         @JvmStatic
         @Provides
         fun viewModel(
                 activity: MainActivity,
                 factory: MainViewModel.Factory
-        ) = ViewModelProviders.of(activity, factory).get(MainViewModel::class.java)
-
-        @JvmStatic
-        @Provides
-        fun categoryObserver(viewModel: MainViewModel): Observer<Category> =
-                viewModel.categoryObserver
-
-        @JvmStatic
-        @Provides
-        fun categoryObservable(viewModel: MainViewModel): Observable<Category> =
-                viewModel.categoryObservable
+        ): MainViewModel = ViewModelProviders.of(activity, factory).get(MainViewModel::class.java)
 
         @JvmStatic
         @Provides

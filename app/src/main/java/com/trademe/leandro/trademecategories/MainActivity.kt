@@ -1,30 +1,32 @@
 package com.trademe.leandro.trademecategories
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.trademe.leandro.trademecategories.categories.CategoriesAdapter
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.AndroidInjection
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
-    lateinit var factory: MainViewModel.Factory
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
         breadcrumb.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         viewModel.breadcrumb.observe(this, Observer {
             it?.let {
                 breadcrumb.adapter = CategoriesAdapter(it, {
@@ -50,4 +52,6 @@ class MainActivity : DaggerAppCompatActivity() {
                     .commit()
         }
     }
+
+    override fun supportFragmentInjector() = viewModel.fragmentInjector
 }
