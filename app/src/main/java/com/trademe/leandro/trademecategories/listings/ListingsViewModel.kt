@@ -12,11 +12,10 @@ import io.reactivex.disposables.CompositeDisposable
  */
 class ListingsViewModel(
         categoryNumberObservable: Observable<String>,
-        searchUseCase: SearchUseCase
+        searchUseCase: SearchUseCase,
+        private val disposables: CompositeDisposable,
+        val viewState: MutableLiveData<ListingsViewState>
 ) : ViewModel() {
-    val viewState: MutableLiveData<ListingViewState> = MutableLiveData<ListingViewState>()
-
-    private val disposables = CompositeDisposable()
 
     init {
         disposables.add(categoryNumberObservable
@@ -31,9 +30,11 @@ class ListingsViewModel(
 
     class Factory(
             private val categoryNumberObservable: Observable<String>,
-            private val searchUseCase: SearchUseCase
+            private val searchUseCase: SearchUseCase,
+            private val disposables: CompositeDisposable,
+            private val viewState: MutableLiveData<ListingsViewState>
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                ListingsViewModel(categoryNumberObservable, searchUseCase) as T
+                ListingsViewModel(categoryNumberObservable, searchUseCase, disposables, viewState) as T
     }
 }

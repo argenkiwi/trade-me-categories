@@ -1,11 +1,13 @@
 package com.trademe.leandro.trademecategories.listings
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
 import com.trademe.leandro.trademecategories.SearchUseCase
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created by Leandro on 10/11/2017.
@@ -19,10 +21,20 @@ object ListingsModule {
 
     @JvmStatic
     @Provides
+    fun disposables() = CompositeDisposable()
+
+    @JvmStatic
+    @Provides
+    fun viewState() = MutableLiveData<ListingsViewState>()
+
+    @JvmStatic
+    @Provides
     fun viewModelFactory(
             categoryNumberObservable: Observable<String>,
-            searchUseCase: SearchUseCase
-    ) = ListingsViewModel.Factory(categoryNumberObservable, searchUseCase)
+            searchUseCase: SearchUseCase,
+            disposables: CompositeDisposable,
+            viewState: MutableLiveData<ListingsViewState>
+    ) = ListingsViewModel.Factory(categoryNumberObservable, searchUseCase, disposables, viewState)
 
     @JvmStatic
     @Provides
