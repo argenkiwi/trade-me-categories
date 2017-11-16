@@ -43,7 +43,6 @@ abstract class MainModule {
 
         @JvmStatic
         @Provides
-        @ActivityScope
         fun viewModelFactory(
                 fragmentInjector: DispatchingAndroidInjector<Fragment>,
                 subject: Subject<Category>
