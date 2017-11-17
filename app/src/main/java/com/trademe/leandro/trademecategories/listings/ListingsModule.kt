@@ -6,7 +6,6 @@ import com.trademe.leandro.trademecategories.SearchUseCase
 import com.trademe.leandro.trademecategories.TradeMeService
 import dagger.Module
 import dagger.Provides
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 
 /**
