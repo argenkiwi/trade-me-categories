@@ -23,14 +23,15 @@ class MainViewModel(
     private val disposables = CompositeDisposable()
 
     init {
-        disposables.add(categoryObservable.subscribe({
-            val categories = breadcrumb.value;
-            breadcrumb.value = when {
-                categories == null -> arrayListOf(it)
-                categories.contains(it) -> categories.subList(0, categories.indexOf(it) + 1)
-                else -> categories.filter { !it.isLeaf }.plus(it)
-            }
-        }))
+        disposables.add(categoryObservable
+                .scan(emptyList<Category>(), { categories, category ->
+                    when {
+                        categories.contains(category) -> categories.subList(0, categories.indexOf(category) + 1)
+                        else -> categories.filter { !it.isLeaf }.plus(category)
+                    }
+                })
+                .subscribe({ breadcrumb.value = it })
+        )
     }
 
     fun onBreadcrumbItemClicked(it: Category) {

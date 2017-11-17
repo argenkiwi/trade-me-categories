@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 })
                 breadcrumb.scrollToPosition(it.lastIndex)
 
-                it.last().let {
+                it.lastOrNull()?.let {
                     val categoryName = it.name
                     val categoryNumber = it.number
                     fab?.setOnClickListener {
