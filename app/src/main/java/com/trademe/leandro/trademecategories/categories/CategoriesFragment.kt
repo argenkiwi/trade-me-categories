@@ -1,6 +1,7 @@
 package com.trademe.leandro.trademecategories.categories
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -36,7 +37,11 @@ class CategoriesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        AndroidSupportInjection.inject(this)
+        try {
+            viewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
+        } catch (error: Throwable) {
+            AndroidSupportInjection.inject(this)
+        }
 
         viewModel.viewState.observe(this, Observer {
             when (it) {
