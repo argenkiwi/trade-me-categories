@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.trademe.leandro.trademecategories.SearchUseCase
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 /**
  * Created by Leandro on 10/11/2017.
@@ -28,7 +29,7 @@ class ListingsViewModel(
         disposables.dispose()
     }
 
-    class Factory(
+    class Factory @Inject constructor(
             private val categoryNumberObservable: Observable<String>,
             private val searchUseCase: SearchUseCase,
             private val disposables: CompositeDisposable,

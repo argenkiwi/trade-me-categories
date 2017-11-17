@@ -16,15 +16,6 @@ object CategoriesModule {
 
     @JvmStatic
     @Provides
-    fun viewModelFactory(
-            categoryObserver: Observer<Category>,
-            categoryObservable: Observable<Category>,
-            service: TradeMeService
-    ): CategoriesViewModel.Factory = CategoriesViewModel
-            .Factory(categoryObserver, categoryObservable, service)
-
-    @JvmStatic
-    @Provides
     fun viewModel(
             fragment: CategoriesFragment,
             factory: CategoriesViewModel.Factory

@@ -29,15 +29,6 @@ object ListingsModule {
 
     @JvmStatic
     @Provides
-    fun viewModelFactory(
-            categoryNumberObservable: Observable<String>,
-            searchUseCase: SearchUseCase,
-            disposables: CompositeDisposable,
-            viewState: MutableLiveData<ListingsViewState>
-    ) = ListingsViewModel.Factory(categoryNumberObservable, searchUseCase, disposables, viewState)
-
-    @JvmStatic
-    @Provides
     fun viewModel(
             fragment: ListingsFragment,
             factory: ListingsViewModel.Factory

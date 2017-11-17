@@ -9,8 +9,8 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * Created by Leandro on 10/11/2017.
@@ -49,7 +49,7 @@ class CategoriesViewModel(
         disposables.dispose()
     }
 
-    class Factory(
+    class Factory @Inject constructor(
             private val categoryObserver: Observer<Category>,
             private val categoryObservable: Observable<Category>,
             private val service: TradeMeService
