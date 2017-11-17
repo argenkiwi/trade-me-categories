@@ -18,11 +18,10 @@ import javax.inject.Inject
 class CategoriesViewModel(
         private val categoryObserver: Observer<Category>,
         categoryObservable: Observable<Category>,
-        service: TradeMeService
+        service: TradeMeService,
+        private val disposables: CompositeDisposable,
+        val viewState: MutableLiveData<CategoriesViewState>
 ) : ViewModel() {
-    private val disposables = CompositeDisposable()
-
-    val viewState = MutableLiveData<CategoriesViewState>()
 
     init {
         viewState.value = Loading
@@ -52,9 +51,16 @@ class CategoriesViewModel(
     class Factory @Inject constructor(
             private val categoryObserver: Observer<Category>,
             private val categoryObservable: Observable<Category>,
-            private val service: TradeMeService
+            private val service: TradeMeService,
+            private val disposables: CompositeDisposable,
+            private val viewState: MutableLiveData<CategoriesViewState>
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                CategoriesViewModel(categoryObserver, categoryObservable, service) as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>) = CategoriesViewModel(
+                categoryObserver,
+                categoryObservable,
+                service,
+                disposables,
+                viewState
+        ) as T
     }
 }
