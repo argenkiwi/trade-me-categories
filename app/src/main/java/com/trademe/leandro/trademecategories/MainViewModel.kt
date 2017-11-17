@@ -9,6 +9,7 @@ import dagger.android.DispatchingAndroidInjector
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 /**
  * Created by Leandro on 13/11/2017.
@@ -16,10 +17,9 @@ import io.reactivex.disposables.CompositeDisposable
 class MainViewModel(
         val fragmentInjector: DispatchingAndroidInjector<Fragment>,
         private val categoryObserver: Observer<Category>,
-        categoryObservable: Observable<Category>
+        categoryObservable: Observable<Category>,
+        val breadcrumb: MutableLiveData<List<Category>>
 ) : ViewModel() {
-    val breadcrumb = MutableLiveData<List<Category>>()
-
     private val disposables = CompositeDisposable()
 
     init {
@@ -42,12 +42,17 @@ class MainViewModel(
         disposables.dispose()
     }
 
-    class Factory(
+    class Factory @Inject constructor(
             private val fragmentInjector: DispatchingAndroidInjector<Fragment>,
             private val observer: Observer<Category>,
-            private val observable: Observable<Category>
+            private val observable: Observable<Category>,
+            private val breadcrumb: MutableLiveData<List<Category>>
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                MainViewModel(fragmentInjector, observer, observable) as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>) = MainViewModel(
+                fragmentInjector,
+                observer,
+                observable,
+                breadcrumb
+        ) as T
     }
 }

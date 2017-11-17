@@ -1,7 +1,7 @@
 package com.trademe.leandro.trademecategories
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v4.app.Fragment
 import com.trademe.leandro.trademecategories.categories.CategoriesFragment
 import com.trademe.leandro.trademecategories.categories.CategoriesModule
 import com.trademe.leandro.trademecategories.data.Category
@@ -11,7 +11,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
-import dagger.android.DispatchingAndroidInjector
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.subjects.BehaviorSubject
@@ -43,10 +42,7 @@ abstract class MainModule {
 
         @JvmStatic
         @Provides
-        fun viewModelFactory(
-                fragmentInjector: DispatchingAndroidInjector<Fragment>,
-                subject: Subject<Category>
-        ) = MainViewModel.Factory(fragmentInjector, subject, subject)
+        fun breadcrumb() = MutableLiveData<List<Category>>()
 
         @JvmStatic
         @Provides
