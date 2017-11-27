@@ -43,9 +43,9 @@ class ListingsFragment : Fragment() {
             AndroidSupportInjection.inject(this)
         }
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.state.observe(this, Observer {
             when (it) {
-                is Success -> {
+                is ListingsState.Success -> {
                     messageView.visibility = View.GONE
                     listingsList.visibility = View.VISIBLE
                     it.searchResult.list.let {
@@ -56,9 +56,9 @@ class ListingsFragment : Fragment() {
                     messageView.visibility = View.VISIBLE
                     listingsList.visibility = View.GONE
                     messageView.text = when (it) {
-                        is Loading -> getString(R.string.loading)
-                        is Failure -> it.error.localizedMessage
-                        is Empty -> getString(R.string.no_listings_found)
+                        is ListingsState.Loading -> getString(R.string.loading)
+                        is ListingsState.Failure -> it.error.localizedMessage
+                        is ListingsState.Empty -> getString(R.string.no_listings_found)
                         else -> null
                     }
                 }

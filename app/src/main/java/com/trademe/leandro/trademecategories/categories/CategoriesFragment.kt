@@ -43,19 +43,19 @@ class CategoriesFragment : Fragment() {
             AndroidSupportInjection.inject(this)
         }
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.state.observe(this, Observer {
             when (it) {
-                is Loading -> {
+                is CategoriesState.Loading -> {
                     messageView.visibility = View.VISIBLE
                     messageView.setText(R.string.loading)
                     categoryList.visibility = View.GONE
                 }
-                is Failure -> {
+                is CategoriesState.Failure -> {
                     messageView.visibility = View.VISIBLE
                     messageView.text = it.error.localizedMessage
                     categoryList.visibility = View.GONE
                 }
-                is Success -> {
+                is CategoriesState.Success -> {
                     messageView.visibility = View.GONE
                     categoryList.visibility = View.VISIBLE
                     it.category.subcategories.let {

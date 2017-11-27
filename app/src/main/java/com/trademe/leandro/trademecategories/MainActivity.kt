@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import android.view.View
 import com.trademe.leandro.trademecategories.categories.CategoriesAdapter
 import com.trademe.leandro.trademecategories.listings.ListingsFragment
@@ -28,15 +29,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
 
         breadcrumb.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        viewModel.breadcrumb.observe(this, Observer {
+        viewModel.state.observe(this, Observer {
             it?.let {
-                breadcrumb.adapter = CategoriesAdapter(it, {
-                    viewModel.onBreadcrumbItemClicked(it)
-                })
+                breadcrumb.adapter = CategoriesAdapter(it, { viewModel.publish(it) })
+
                 breadcrumb.scrollToPosition(it.lastIndex)
 
                 it.lastOrNull()?.let {

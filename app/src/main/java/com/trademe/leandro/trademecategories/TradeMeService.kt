@@ -3,7 +3,6 @@ package com.trademe.leandro.trademecategories
 import com.trademe.leandro.trademecategories.data.Category
 import com.trademe.leandro.trademecategories.data.SearchResult
 import io.reactivex.Observable
-import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,7 +11,7 @@ import retrofit2.http.Query
  */
 interface TradeMeService {
     @GET("v1/Categories/0.json")
-    fun getCategories(): Single<Category>
+    fun getCategories(): Observable<Category>
 
     @GET("v1/Search/General.json")
     fun search(

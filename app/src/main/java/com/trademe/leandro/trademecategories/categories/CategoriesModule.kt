@@ -18,7 +18,7 @@ object CategoriesModule {
 
     @JvmStatic
     @Provides
-    fun viewState() = MutableLiveData<CategoriesViewState>()
+    fun viewState() = MutableLiveData<CategoriesState>()
 
     @JvmStatic
     @Provides
